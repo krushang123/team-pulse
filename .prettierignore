@@ -1,0 +1,20 @@
+# Ignore directories
+node_modules/
+coverage/
+packages/*/node_modules/
+packages/*/coverage/
+
+# Ignore files
+*.txt
+*.log
+*.yml
+*.lock
+
+# Ignore Next.js directories
+**/.next/
+**/out/
+**/.out/
+**/coverage/
+
+# Ignore the dist folder in all packages/modules
+**/dist
