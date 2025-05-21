@@ -4,6 +4,8 @@ import { useAppSelector } from "@/hooks/use-store"
 import { selectProjectById } from "@/store/project/project-slice"
 import TaskColumn from "@/components/task/task-column"
 
+import NewTaskDialog from "../task/new-task-dialog"
+
 type ProjectDetailProps = {
   slug: string
 }
@@ -23,7 +25,10 @@ const ProjectDetail = (props: ProjectDetailProps) => {
 
   return (
     <div>
-      <h1 className='text-3xl font-bold mb-6'>{project.name}</h1>
+      <div className='flex justify-between items-center mb-6'>
+        <h1 className='text-3xl font-bold mb-6'>{project.name}</h1>
+        <NewTaskDialog projectId={project.id} status='todo' />
+      </div>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
         <TaskColumn projectId={project.id} status='todo' />
