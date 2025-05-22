@@ -15,7 +15,7 @@ export type Task = {
   priority: TaskPriority
   assignee?: Assignee
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
 }
 
 export type Project = {

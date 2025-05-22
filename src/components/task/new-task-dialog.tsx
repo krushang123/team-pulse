@@ -1,5 +1,8 @@
 "use client"
 
+import { useState } from "react"
+import { PlusIcon } from "lucide-react"
+
 import {
   Dialog,
   DialogContent,
@@ -8,22 +11,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { PlusIcon } from "lucide-react"
-import { TaskStatus } from "@/store/project/types"
 
-import NewTaskForm from "./new-task-form"
+import TaskForm from "./task-form"
 
 type TaskDialogProps = {
   projectId: string
-  status: TaskStatus
 }
 
 const NewTaskDialog = (props: TaskDialogProps) => {
-  const { projectId, status } = props
+  const { projectId } = props
+
+  const [open, setOpen] = useState<boolean>(false)
+
+  const handleCloseDialog = () => {
+    setOpen(false)
+  }
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>
             <PlusIcon className='w-4 h-4 mr-2' />
@@ -36,11 +42,7 @@ const NewTaskDialog = (props: TaskDialogProps) => {
             <DialogTitle>Add New Task</DialogTitle>
           </DialogHeader>
 
-          <NewTaskForm
-            projectId={projectId}
-            status={status}
-            // onSuccess={() => setOpen(false)}
-          />
+          <TaskForm isNew projectId={projectId} onSuccess={handleCloseDialog} />
         </DialogContent>
       </Dialog>
     </div>

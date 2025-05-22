@@ -7,6 +7,8 @@ import TaskCard from "./task-card"
 type TaskColumnProps = {
   status: TaskStatus
   projectId: string
+  onEdit: (taskId: string) => void
+  onDelete: (taskId: string) => void
 }
 
 const statusLabel: Record<TaskStatus, string> = {
@@ -22,7 +24,7 @@ const bgColors: Record<TaskStatus, string> = {
 }
 
 const TaskColumn = (props: TaskColumnProps) => {
-  const { status, projectId } = props
+  const { status, projectId, onEdit, onDelete } = props
 
   const tasks = useAppSelector(selectTasksByStatus(projectId, status))
 
@@ -32,7 +34,12 @@ const TaskColumn = (props: TaskColumnProps) => {
 
       <div className='space-y-4'>
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard
+            key={task.id}
+            task={task}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ))}
       </div>
     </div>

@@ -7,21 +7,16 @@ import { Project, Task } from "./types"
 
 type ProjectState = {
   projects: Project[]
-  selectedProjectId?: string
 }
 
 const initialState: ProjectState = {
   projects: projects,
-  selectedProjectId: undefined,
 }
 
 const projectSlice = createSlice({
   name: "project",
   initialState,
   reducers: {
-    setProjects(state, action: PayloadAction<Project[]>) {
-      state.projects = action.payload
-    },
     addProject(state, action: PayloadAction<Project>) {
       state.projects.push(action.payload)
     },
@@ -32,18 +27,12 @@ const projectSlice = createSlice({
     deleteProject(state, action: PayloadAction<string>) {
       state.projects = state.projects.filter((p) => p.id !== action.payload)
     },
-    selectProject(state, action: PayloadAction<string>) {
-      state.selectedProjectId = action.payload
-    },
-
-    // 🔽 Task-specific actions
     addTask(state, action: PayloadAction<{ projectId: string; task: Task }>) {
       const project = state.projects.find(
         (p) => p.id === action.payload.projectId,
       )
       if (project) project.tasks.push(action.payload.task)
     },
-
     updateTask(
       state,
       action: PayloadAction<{ projectId: string; task: Task }>,
@@ -58,7 +47,19 @@ const projectSlice = createSlice({
         if (taskIndex !== -1) project.tasks[taskIndex] = action.payload.task
       }
     },
-
+    deleteTask(
+      state,
+      action: PayloadAction<{ projectId: string; taskId: string }>,
+    ) {
+      const project = state.projects.find(
+        (p) => p.id === action.payload.projectId,
+      )
+      if (project) {
+        project.tasks = project.tasks.filter(
+          (t) => t.id !== action.payload.taskId,
+        )
+      }
+    },
     moveTask(
       state,
       action: PayloadAction<{
@@ -81,20 +82,16 @@ const projectSlice = createSlice({
 })
 
 export const {
-  setProjects,
   addProject,
   updateProject,
   deleteProject,
-  selectProject,
   addTask,
   updateTask,
+  deleteTask,
   moveTask,
 } = projectSlice.actions
 
 export const selectProjects = (state: RootState) => state.project.projects
-
-export const selectSelectedProjectId = (state: RootState) =>
-  state.project.selectedProjectId
 
 export const selectProjectById = (id: string) => (state: RootState) =>
   state.project.projects.find((p) => p.id === id)

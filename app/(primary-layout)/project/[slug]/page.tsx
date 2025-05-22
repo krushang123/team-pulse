@@ -4,7 +4,9 @@ type ProjectDetailPageProps = {
   params: Promise<{ slug: string }>
 }
 
-const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
+const ProjectDetailPage = async (props: ProjectDetailPageProps) => {
+  const { params } = props
+
   const { slug } = await params
 
   return <ProjectDetail slug={slug} />
