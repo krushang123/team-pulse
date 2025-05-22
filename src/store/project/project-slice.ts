@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { projects } from "@/mock/projects"
 import { RootState } from "@/store/index"
 
-import { Project, Task } from "./types"
+import { Project, Task, TaskStatus } from "./types"
+import { arrayMove } from "@/lib/utils"
 
 type ProjectState = {
   projects: Project[]
@@ -65,7 +66,8 @@ const projectSlice = createSlice({
       action: PayloadAction<{
         projectId: string
         taskId: string
-        newStatus: "todo" | "in-progress" | "done"
+        newStatus: TaskStatus
+        newIndex: number
       }>,
     ) {
       const project = state.projects.find(
@@ -75,6 +77,64 @@ const projectSlice = createSlice({
         const task = project.tasks.find((t) => t.id === action.payload.taskId)
         if (task) {
           task.status = action.payload.newStatus
+          task.updatedAt = new Date().toISOString()
+
+          project.tasks = project.tasks.filter((t) => t.id !== task.id)
+
+          const before = project.tasks.filter(
+            (t) => t.status === action.payload.newStatus,
+          )
+          const after = project.tasks.filter(
+            (t) => t.status !== action.payload.newStatus,
+          )
+
+          before.splice(action.payload.newIndex, 0, task)
+          project.tasks = [...after, ...before]
+        }
+      }
+    },
+    reorderTask(
+      state,
+      action: PayloadAction<{
+        projectId: string
+        status: TaskStatus
+        oldIndex: number
+        newIndex: number
+      }>,
+    ) {
+      const project = state.projects.find(
+        (p) => p.id === action.payload.projectId,
+      )
+      if (project) {
+        const statusTasks = project.tasks.filter(
+          (t) => t.status === action.payload.status,
+        )
+        const taskIds = statusTasks.map((t) => t.id)
+
+        if (
+          action.payload.oldIndex >= 0 &&
+          action.payload.newIndex >= 0 &&
+          action.payload.oldIndex < taskIds.length &&
+          action.payload.newIndex < taskIds.length
+        ) {
+          const newTaskIds = arrayMove(
+            taskIds,
+            action.payload.oldIndex,
+            action.payload.newIndex,
+          )
+
+          const taskMap = new Map(statusTasks.map((task) => [task.id, task]))
+
+          const newTasks = project.tasks.filter(
+            (t) => t.status !== action.payload.status,
+          )
+
+          newTaskIds.forEach((taskId) => {
+            const task = taskMap.get(taskId)
+            if (task) newTasks.push(task)
+          })
+
+          project.tasks = newTasks
         }
       }
     },
@@ -89,6 +149,7 @@ export const {
   updateTask,
   deleteTask,
   moveTask,
+  reorderTask,
 } = projectSlice.actions
 
 export const selectProjects = (state: RootState) => state.project.projects

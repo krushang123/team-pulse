@@ -1,4 +1,7 @@
 import { Pencil, Trash2 } from "lucide-react"
+import { CSS } from "@dnd-kit/utilities"
+import { defaultAnimateLayoutChanges, useSortable } from "@dnd-kit/sortable"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -15,15 +18,51 @@ import { Task } from "@/store/project/types"
 
 type TaskCardProps = {
   task: Task
+  isOverlay?: boolean
   onEdit: (taskId: string) => void
   onDelete: (taskId: string) => void
 }
 
 const TaskCard = (props: TaskCardProps) => {
-  const { task, onEdit, onDelete } = props
+  const { task, isOverlay, onEdit, onDelete } = props
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: "task",
+      status: task.status,
+      task,
+    },
+    disabled: isOverlay,
+    animateLayoutChanges: (args) =>
+      isOverlay ? false : defaultAnimateLayoutChanges(args),
+  })
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 50 : "auto",
+    cursor: "grab",
+    touchAction: "none",
+  }
 
   return (
-    <Card className='rounded-xl shadow-md'>
+    <Card
+      ref={isOverlay ? undefined : setNodeRef}
+      style={style}
+      {...(isOverlay ? {} : { ...attributes, ...listeners })}
+      className='rounded-xl shadow-md relative'
+      role='listitem'
+      tabIndex={0}
+    >
       <CardHeader className='flex justify-between items-start gap-2'>
         <div className='flex flex-1 flex-col gap-2'>
           <CardTitle className='line-clamp-1'>{task.title}</CardTitle>

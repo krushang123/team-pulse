@@ -52,9 +52,6 @@ const ProjectForm = (props: ProjectFormProps) => {
           description: values.description,
           createdAt: now,
           tasks: [],
-          doneTasks: 0,
-          inProgressTasks: 0,
-          todoTasks: 0,
         }),
       )
     } else if (project?.id) {
