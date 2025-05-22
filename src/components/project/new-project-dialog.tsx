@@ -11,16 +11,20 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
-import NewProjectForm from "./new-project-form"
+import ProjectForm from "./project-form"
 
 const NewProjectDialog = () => {
   const [open, setOpen] = useState<boolean>(false)
+
+  const handleCloseDialog = () => {
+    setOpen(false)
+  }
 
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button onClick={() => setOpen(true)}>New Project</Button>
+          <Button>New Project</Button>
         </DialogTrigger>
 
         <DialogContent>
@@ -28,7 +32,7 @@ const NewProjectDialog = () => {
             <DialogTitle>Create New Project</DialogTitle>
           </DialogHeader>
 
-          <NewProjectForm onSuccess={() => setOpen(false)} />
+          <ProjectForm isNew onSuccess={handleCloseDialog} />
         </DialogContent>
       </Dialog>
     </div>

@@ -1,17 +1,27 @@
 import { formatDistanceToNow } from "date-fns"
-import { CheckCircle, Loader2, Circle } from "lucide-react"
+import { CheckCircle, Loader2, Circle, Trash2, Pencil } from "lucide-react"
 import Link from "next/link"
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Project } from "@/store/project/types"
+import { Button } from "@/components/ui/button"
 
 type ProjectCardProps = {
   project: Project
+  onEdit: (projectId: string) => void
+  onDelete: (projectId: string) => void
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
-  const { project } = props
+  const { project, onEdit, onDelete } = props
 
   const totalTasks =
     project.doneTasks + project.inProgressTasks + project.todoTasks
@@ -19,28 +29,66 @@ const ProjectCard = (props: ProjectCardProps) => {
   const completionPercent =
     totalTasks === 0 ? 0 : Math.round((project.doneTasks / totalTasks) * 100)
 
+  const updatedText = project.updatedAt
+    ? `Updated ${formatDistanceToNow(new Date(project.updatedAt), {
+        addSuffix: true,
+        includeSeconds: true,
+      })}`
+    : `Created ${formatDistanceToNow(new Date(project.createdAt), {
+        addSuffix: true,
+        includeSeconds: true,
+      })}`
+
+  const handleEditButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault()
+    event.stopPropagation()
+    onEdit(project.id)
+  }
+
+  const handleDeleteButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault()
+    event.stopPropagation()
+    onDelete(project.id)
+  }
+
   return (
     <Link href={`/project/${project.id}`}>
       <Card className='hover:shadow-lg transition-shadow cursor-pointer'>
         <CardHeader>
           <div className='flex justify-between items-start gap-2'>
-            <div className='w-[70%]'>
-              <h3 className='text-lg font-semibold line-clamp-1'>
-                {project.name}
-              </h3>
+            <div className='flex flex-1 flex-col gap-2'>
+              <CardTitle className='line-clamp-1'>{project.name}</CardTitle>
 
               {project.description && (
-                <p className='text-sm text-muted-foreground line-clamp-2'>
+                <CardDescription className='line-clamp-2'>
                   {project.description}
-                </p>
+                </CardDescription>
               )}
             </div>
 
-            <span className='text-xs text-muted-foreground'>
-              {formatDistanceToNow(new Date(project.updatedAt), {
-                addSuffix: true,
-              })}
-            </span>
+            <div className='flex gap-1'>
+              <Button
+                variant='ghost'
+                size='icon'
+                className='text-muted-foreground'
+                onClick={handleEditButtonClick}
+              >
+                <Pencil className='w-4 h-4' />
+              </Button>
+
+              <Button
+                variant='ghost'
+                size='icon'
+                className='text-muted-foreground'
+                onClick={handleDeleteButtonClick}
+              >
+                <Trash2 className='w-4 h-4' />
+              </Button>
+            </div>
           </div>
         </CardHeader>
 
@@ -64,6 +112,10 @@ const ProjectCard = (props: ProjectCardProps) => {
 
           <Progress value={completionPercent} className='h-2' />
         </CardContent>
+
+        <CardFooter className='text-xs text-muted-foreground'>
+          {updatedText}
+        </CardFooter>
       </Card>
     </Link>
   )

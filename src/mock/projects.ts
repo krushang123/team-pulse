@@ -6,7 +6,7 @@ export const projects: Project[] = [
     name: "AI Chatbot Prototype for Support Tickets",
     description:
       "Prototype and test GPT-powered AI assistant for support queries and helpdesk workflows across multiple user flows.",
-    updatedAt: "2025-05-20T12:30:00Z",
+    createdAt: "2025-05-20T12:30:00Z",
     tasks: [
       {
         id: "t1",
@@ -41,7 +41,8 @@ export const projects: Project[] = [
     id: "p2",
     name: "Website Footer Polish",
     description: "Tweak links, legal text, and responsiveness.",
-    updatedAt: "2025-05-18T08:00:00Z",
+    createdAt: "2025-05-18T08:00:00Z",
+    updatedAt: "2025-05-18T18:00:00Z",
     tasks: [],
     doneTasks: 0,
     inProgressTasks: 0,
@@ -52,6 +53,7 @@ export const projects: Project[] = [
     name: "Product Launch Campaign Strategy",
     description:
       "Plan social media, email, and influencer campaigns ahead of major launch. Define goals, schedule, and KPIs.",
+    createdAt: "2025-05-19T10:15:00Z",
     updatedAt: "2025-05-19T10:15:00Z",
     tasks: [
       {
@@ -74,6 +76,7 @@ export const projects: Project[] = [
     name: "Next.js Migration",
     description:
       "Migrate legacy app to Next.js with full SSR, layout routes, and edge functions.",
+    createdAt: "2025-05-21T08:30:00Z",
     updatedAt: "2025-05-21T08:30:00Z",
     tasks: Array.from({ length: 6 }).map((_, i) => ({
       id: `t${i + 4}`,
@@ -94,7 +97,8 @@ export const projects: Project[] = [
     name: "Q2 Financial Reports",
     description:
       "Compile expense, income, and forecasting reports for stakeholders.",
-    updatedAt: "2025-05-16T13:00:00Z",
+    createdAt: "2025-05-16T13:00:00Z",
+    updatedAt: "2025-05-16T14:00:00Z",
     tasks: [],
     doneTasks: 0,
     inProgressTasks: 0,
@@ -105,6 +109,7 @@ export const projects: Project[] = [
     name: "Slack Bot MVP",
     description:
       "Build a Slack-integrated tool for quick task assignment, daily standup logging, and on-call alerts.",
+    createdAt: "2025-05-20T09:45:00Z",
     updatedAt: "2025-05-20T09:45:00Z",
     tasks: [
       {
@@ -136,7 +141,8 @@ export const projects: Project[] = [
     name: "Design System Refactor",
     description:
       "Remove unused tokens, rework grid system, migrate to Tailwind 4 when stable.",
-    updatedAt: "2025-05-13T17:00:00Z",
+    createdAt: "2025-05-13T17:00:00Z",
+    updatedAt: "2025-06-13T17:00:00Z",
     tasks: [],
     doneTasks: 0,
     inProgressTasks: 0,
@@ -147,6 +153,7 @@ export const projects: Project[] = [
     name: "Customer Interview Series",
     description:
       "Interview power users to shape roadmap and uncover pain points. Schedule, record, and summarize findings.",
+    createdAt: "2025-05-20T12:00:00Z",
     updatedAt: "2025-05-20T12:00:00Z",
     tasks: [
       {
@@ -167,6 +174,7 @@ export const projects: Project[] = [
     id: "p9",
     name: "Internal Onboarding Wiki",
     description: "Create one-stop Notion resource for devs, ops, and PMs.",
+    createdAt: "2025-05-21T15:00:00Z",
     updatedAt: "2025-05-21T15:00:00Z",
     tasks: [],
     doneTasks: 0,
@@ -178,6 +186,7 @@ export const projects: Project[] = [
     name: "CI/CD Audit",
     description:
       "Analyze and document CI pipeline health and flaky tests. Archive old jobs.",
+    createdAt: "2025-05-17T10:00:00Z",
     updatedAt: "2025-05-17T10:00:00Z",
     tasks: [
       {

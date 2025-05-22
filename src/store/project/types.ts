@@ -22,7 +22,8 @@ export type Project = {
   id: string
   name: string
   description?: string
-  updatedAt: string
+  createdAt: string
+  updatedAt?: string
 
   tasks: Task[]
 
