@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit"
 
 import { projects } from "@/mock/projects"
 import { RootState } from "@/store/index"
+import { arrayMove } from "@/lib/utils"
 
 import { Project, Task, TaskStatus } from "./types"
-import { arrayMove } from "@/lib/utils"
 
 type ProjectState = {
   projects: Project[]
@@ -154,26 +154,29 @@ export const {
 
 export const selectProjects = (state: RootState) => state.project.projects
 
-export const selectProjectById = (id: string) => (state: RootState) =>
-  state.project.projects.find((p) => p.id === id)
+export const selectProjectById = (id: string) =>
+  createSelector([selectProjects], (projects) =>
+    projects.find((p) => p.id === id),
+  )
 
-export const selectTasksByStatus =
-  (projectId: string, status: Task["status"]) =>
-  (state: RootState): Task[] =>
-    state.project.projects
-      .find((p) => p.id === projectId)
-      ?.tasks.filter((t) => t.status === status) ?? []
+export const selectTasksByStatus = (
+  projectId: string,
+  status: Task["status"],
+) =>
+  createSelector([selectProjects], (projects) => {
+    const project = projects.find((p) => p.id === projectId)
+    return project?.tasks.filter((t) => t.status === status) ?? []
+  })
 
-export const selectTaskById =
-  (projectId: string, taskId: string) => (state: RootState) =>
-    state.project.projects
-      .find((p) => p.id === projectId)
-      ?.tasks.find((t) => t.id === taskId) ?? null
+export const selectTaskById = (projectId: string, taskId: string) =>
+  createSelector([selectProjects], (projects) => {
+    const project = projects.find((p) => p.id === projectId)
+    return project?.tasks.find((t) => t.id === taskId) ?? null
+  })
 
-export const selectTaskCountsByProjectId =
-  (projectId: string) => (state: RootState) => {
-    const tasks =
-      state.project.projects.find((p) => p.id === projectId)?.tasks || []
+export const selectTaskCountsByProjectId = (projectId: string) =>
+  createSelector([selectProjects], (projects) => {
+    const tasks = projects.find((p) => p.id === projectId)?.tasks || []
 
     return tasks.reduce(
       (counts, task) => {
@@ -186,6 +189,6 @@ export const selectTaskCountsByProjectId =
         done: 0,
       } as Record<Task["status"], number>,
     )
-  }
+  })
 
 export default projectSlice.reducer

@@ -103,7 +103,6 @@ const ProjectDetail = (props: ProjectDetailProps) => {
     const overIsColumn = over.data.current?.type === "column"
     const newStatus = overIsColumn ? (over.id as TaskStatus) : overStatus
 
-    // Reordering within the same column
     if (activeStatus === newStatus) {
       if (
         activeIndex !== undefined &&
@@ -120,12 +119,10 @@ const ProjectDetail = (props: ProjectDetailProps) => {
         )
       }
     } else {
-      // Moving to a different column with sortable support
       const tasksInNewStatus = project.tasks.filter(
         (task) => task.status === newStatus,
       )
 
-      // Fallback to inserting at end if overIndex is not available
       const newIndex = overIndex ?? tasksInNewStatus.length
 
       dispatch(

@@ -30,6 +30,7 @@ const TaskCard = (props: TaskCardProps) => {
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
     isDragging,
@@ -58,13 +59,17 @@ const TaskCard = (props: TaskCardProps) => {
     <Card
       ref={isOverlay ? undefined : setNodeRef}
       style={style}
-      {...(isOverlay ? {} : { ...attributes, ...listeners })}
       className='rounded-xl shadow-md relative'
       role='listitem'
       tabIndex={0}
     >
       <CardHeader className='flex justify-between items-start gap-2'>
-        <div className='flex flex-1 flex-col gap-2'>
+        <div
+          className='flex flex-1 flex-col gap-2'
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+        >
           <CardTitle className='line-clamp-1'>{task.title}</CardTitle>
 
           {task.description && (
@@ -79,8 +84,8 @@ const TaskCard = (props: TaskCardProps) => {
             variant='ghost'
             size='icon'
             className='text-muted-foreground'
+            style={{ pointerEvents: "auto" }}
             onClick={(e) => {
-              e.preventDefault()
               e.stopPropagation()
               onEdit(task.id)
             }}
@@ -93,7 +98,6 @@ const TaskCard = (props: TaskCardProps) => {
             size='icon'
             className='text-muted-foreground'
             onClick={(e) => {
-              e.preventDefault()
               e.stopPropagation()
               onDelete(task.id)
             }}
