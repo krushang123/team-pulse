@@ -109,4 +109,22 @@ export const selectTaskById =
       .find((p) => p.id === projectId)
       ?.tasks.find((t) => t.id === taskId) ?? null
 
+export const selectTaskCountsByProjectId =
+  (projectId: string) => (state: RootState) => {
+    const tasks =
+      state.project.projects.find((p) => p.id === projectId)?.tasks || []
+
+    return tasks.reduce(
+      (counts, task) => {
+        counts[task.status]++
+        return counts
+      },
+      {
+        todo: 0,
+        "in-progress": 0,
+        done: 0,
+      } as Record<Task["status"], number>,
+    )
+  }
+
 export default projectSlice.reducer

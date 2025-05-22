@@ -24,10 +24,5 @@ export type Project = {
   description?: string
   createdAt: string
   updatedAt?: string
-
   tasks: Task[]
-
-  doneTasks: number
-  inProgressTasks: number
-  todoTasks: number
 }

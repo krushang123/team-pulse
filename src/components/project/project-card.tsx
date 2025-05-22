@@ -13,6 +13,8 @@ import {
 import { Progress } from "@/components/ui/progress"
 import { Project } from "@/store/project/types"
 import { Button } from "@/components/ui/button"
+import { useAppSelector } from "@/hooks/use-store"
+import { selectTaskCountsByProjectId } from "@/store/project/project-slice"
 
 type ProjectCardProps = {
   project: Project
@@ -23,11 +25,13 @@ type ProjectCardProps = {
 const ProjectCard = (props: ProjectCardProps) => {
   const { project, onEdit, onDelete } = props
 
+  const taskCounts = useAppSelector(selectTaskCountsByProjectId(project.id))
+
   const totalTasks =
-    project.doneTasks + project.inProgressTasks + project.todoTasks
+    taskCounts.todo + taskCounts["in-progress"] + taskCounts.done
 
   const completionPercent =
-    totalTasks === 0 ? 0 : Math.round((project.doneTasks / totalTasks) * 100)
+    totalTasks === 0 ? 0 : Math.round((taskCounts.done / totalTasks) * 100)
 
   const updatedText = project.updatedAt
     ? `Updated ${formatDistanceToNow(new Date(project.updatedAt), {
@@ -96,17 +100,17 @@ const ProjectCard = (props: ProjectCardProps) => {
           <div className='flex justify-between text-sm text-muted-foreground'>
             <div className='flex items-center gap-1'>
               <CheckCircle className='w-4 h-4 text-green-500' />
-              <span>{project.doneTasks} Done</span>
+              <span>{taskCounts.done} Done</span>
             </div>
 
             <div className='flex items-center gap-1'>
               <Loader2 className='w-4 h-4 text-blue-500' />
-              <span>{project.inProgressTasks} In Progress</span>
+              <span>{taskCounts["in-progress"]} In Progress</span>
             </div>
 
             <div className='flex items-center gap-1'>
               <Circle className='w-4 h-4 text-gray-400' />
-              <span>{project.todoTasks} To Do</span>
+              <span>{taskCounts.todo} To Do</span>
             </div>
           </div>
 

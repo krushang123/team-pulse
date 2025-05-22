@@ -33,9 +33,6 @@ export const projects: Project[] = [
         updatedAt: "2025-05-14T14:00:00Z",
       },
     ],
-    doneTasks: 0,
-    inProgressTasks: 1,
-    todoTasks: 1,
   },
   {
     id: "p2",
@@ -44,9 +41,6 @@ export const projects: Project[] = [
     createdAt: "2025-05-18T08:00:00Z",
     updatedAt: "2025-05-18T18:00:00Z",
     tasks: [],
-    doneTasks: 0,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
   {
     id: "p3",
@@ -67,9 +61,6 @@ export const projects: Project[] = [
         updatedAt: "2025-05-14T10:00:00Z",
       },
     ],
-    doneTasks: 1,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
   {
     id: "p4",
@@ -88,9 +79,6 @@ export const projects: Project[] = [
       createdAt: `2025-05-${10 + i}T08:00:00Z`,
       updatedAt: `2025-05-${15 + i}T08:00:00Z`,
     })),
-    doneTasks: 2,
-    inProgressTasks: 2,
-    todoTasks: 2,
   },
   {
     id: "p5",
@@ -100,9 +88,6 @@ export const projects: Project[] = [
     createdAt: "2025-05-16T13:00:00Z",
     updatedAt: "2025-05-16T14:00:00Z",
     tasks: [],
-    doneTasks: 0,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
   {
     id: "p6",
@@ -132,9 +117,6 @@ export const projects: Project[] = [
         updatedAt: "2025-05-15T09:00:00Z",
       },
     ],
-    doneTasks: 1,
-    inProgressTasks: 0,
-    todoTasks: 1,
   },
   {
     id: "p7",
@@ -144,9 +126,6 @@ export const projects: Project[] = [
     createdAt: "2025-05-13T17:00:00Z",
     updatedAt: "2025-06-13T17:00:00Z",
     tasks: [],
-    doneTasks: 0,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
   {
     id: "p8",
@@ -166,9 +145,6 @@ export const projects: Project[] = [
         updatedAt: "2025-05-18T09:00:00Z",
       },
     ],
-    doneTasks: 0,
-    inProgressTasks: 1,
-    todoTasks: 0,
   },
   {
     id: "p9",
@@ -177,9 +153,6 @@ export const projects: Project[] = [
     createdAt: "2025-05-21T15:00:00Z",
     updatedAt: "2025-05-21T15:00:00Z",
     tasks: [],
-    doneTasks: 0,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
   {
     id: "p10",
@@ -200,8 +173,5 @@ export const projects: Project[] = [
         updatedAt: "2025-05-15T10:00:00Z",
       },
     ],
-    doneTasks: 1,
-    inProgressTasks: 0,
-    todoTasks: 0,
   },
 ]
