@@ -61,7 +61,11 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   return (
     <Link href={`/project/${project.id}`}>
-      <Card className='hover:shadow-lg transition-shadow cursor-pointer'>
+      <Card
+        tabIndex={0}
+        role='link'
+        className='hover:shadow-lg focus-visible:ring-primary group'
+      >
         <CardHeader>
           <div className='flex justify-between items-start gap-2'>
             <div className='flex flex-1 flex-col gap-2'>
@@ -74,7 +78,7 @@ const ProjectCard = (props: ProjectCardProps) => {
               )}
             </div>
 
-            <div className='flex gap-1'>
+            <div className='lg:hidden group-hover:flex group-focus-within:flex gap-1'>
               <Button
                 variant='ghost'
                 size='icon'

@@ -59,7 +59,7 @@ const TaskCard = (props: TaskCardProps) => {
     <Card
       ref={isOverlay ? undefined : setNodeRef}
       style={style}
-      className='rounded-xl shadow-md relative'
+      className='rounded-xl shadow-md relative group'
       role='listitem'
       tabIndex={0}
     >
@@ -79,7 +79,7 @@ const TaskCard = (props: TaskCardProps) => {
           )}
         </div>
 
-        <div className='flex gap-1'>
+        <div className='hidden group-hover:flex group-focus-within:flex sm:group-hover:flex sm:group-focus-within:flex gap-1'>
           <Button
             variant='ghost'
             size='icon'

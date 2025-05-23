@@ -4,13 +4,15 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 
 import { useAppSelector } from "@/hooks/use-store"
 import { selectTasksByStatus } from "@/store/project/project-slice"
-import { TaskStatus } from "@/store/project/types"
+import { TaskPriority, TaskStatus } from "@/store/project/types"
 
 import TaskCard from "./task-card"
 
 type TaskColumnProps = {
   status: TaskStatus
   projectId: string
+  assigneeIdFilter: string | null
+  priorityFilter: TaskPriority[]
   onEdit: (taskId: string) => void
   onDelete: (taskId: string) => void
 }
@@ -28,10 +30,34 @@ const bgColors: Record<TaskStatus, string> = {
 }
 
 const TaskColumn = (props: TaskColumnProps) => {
-  const { status, projectId, onEdit, onDelete } = props
+  const {
+    status,
+    projectId,
+    assigneeIdFilter,
+    priorityFilter,
+    onEdit,
+    onDelete,
+  } = props
 
   const tasks = useAppSelector(selectTasksByStatus(projectId, status))
-  const taskIds = useMemo(() => tasks.map((task) => task.id), [tasks])
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      const matchesAssignee = assigneeIdFilter
+        ? task.assignee?.id === assigneeIdFilter
+        : true
+      const matchesPriority =
+        priorityFilter.length > 0
+          ? priorityFilter.includes(task.priority)
+          : true
+      return matchesAssignee && matchesPriority
+    })
+  }, [tasks, assigneeIdFilter, priorityFilter])
+
+  const taskIds = useMemo(
+    () => filteredTasks.map((task) => task.id),
+    [filteredTasks],
+  )
 
   const { setNodeRef, isOver } = useDroppable({
     id: status,
@@ -54,7 +80,7 @@ const TaskColumn = (props: TaskColumnProps) => {
 
       <div className='space-y-4'>
         <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-          {tasks.map((task) => (
+          {filteredTasks.map((task) => (
             <TaskCard
               key={task.id}
               task={task}
