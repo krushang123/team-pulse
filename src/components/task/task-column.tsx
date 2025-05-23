@@ -43,13 +43,18 @@ const TaskColumn = (props: TaskColumnProps) => {
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
-      const matchesAssignee = assigneeIdFilter
-        ? task.assignee?.id === assigneeIdFilter
-        : true
+      const matchesAssignee =
+        assigneeIdFilter === null || assigneeIdFilter === "all"
+          ? true
+          : assigneeIdFilter === "unassigned"
+            ? task.assignee == null
+            : task.assignee?.id === assigneeIdFilter
+
       const matchesPriority =
         priorityFilter.length > 0
           ? priorityFilter.includes(task.priority)
           : true
+
       return matchesAssignee && matchesPriority
     })
   }, [tasks, assigneeIdFilter, priorityFilter])

@@ -18,8 +18,12 @@ const AssigneeFilter = (props: AssigneeFilterProps) => {
   const { assignees, selectedAssigneeId, onChange } = props
   return (
     <Select
-      value={selectedAssigneeId ?? ""}
-      onValueChange={(val) => onChange(val === "" ? null : val)}
+      value={selectedAssigneeId ?? "all"}
+      onValueChange={(val) =>
+        onChange(
+          val === "all" ? null : val === "unassigned" ? "unassigned" : val,
+        )
+      }
     >
       <SelectTrigger className='w-[200px]'>
         <SelectValue placeholder='Assignee' />
@@ -27,6 +31,7 @@ const AssigneeFilter = (props: AssigneeFilterProps) => {
 
       <SelectContent>
         <SelectItem value='all'>All Assignees</SelectItem>
+        <SelectItem value='unassigned'>Unassigned</SelectItem>
 
         {assignees.map((assignee) => (
           <SelectItem key={assignee.id} value={assignee.id}>
