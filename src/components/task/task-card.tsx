@@ -116,8 +116,8 @@ const TaskCard = (props: TaskCardProps) => {
       <CardFooter className='flex justify-between items-center text-xs text-muted-foreground'>
         <span>
           {task.updatedAt
-            ? `Updated: ${formatDate(task.updatedAt)}`
-            : `Created: ${formatDate(task.createdAt)}`}
+            ? `Updated ${formatDate(task.updatedAt)}`
+            : `Created ${formatDate(task.createdAt)}`}
         </span>
 
         {task.assignee && (
