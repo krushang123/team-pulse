@@ -19,6 +19,7 @@ import { addTask, updateTask } from "@/store/project/project-slice"
 import { Task, TaskPriority } from "@/store/project/types"
 import { useAppDispatch } from "@/hooks/use-store"
 import { assignees } from "@/mock/assignees"
+import { toast } from "sonner"
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -65,39 +66,52 @@ const TaskForm = (props: TaskFormProps) => {
     const now = new Date().toISOString()
     const assignee = assignees.find((a) => a.id === data.assigneeId)
 
-    if (isNew) {
-      dispatch(
-        addTask({
-          projectId,
-          task: {
-            id: nanoid(),
-            title: data.title,
-            description: data.description,
-            status: "todo",
-            priority: data.priority,
-            assignee,
-            createdAt: now,
-          },
-        }),
-      )
-    } else if (initialTask?.id) {
-      dispatch(
-        updateTask({
-          projectId,
-          task: {
-            ...initialTask,
-            title: data.title,
-            description: data.description,
-            priority: data.priority,
-            assignee,
-            updatedAt: now,
-          },
-        }),
+    try {
+      if (isNew) {
+        dispatch(
+          addTask({
+            projectId,
+            task: {
+              id: nanoid(),
+              title: data.title,
+              description: data.description,
+              status: "todo",
+              priority: data.priority,
+              assignee,
+              createdAt: now,
+            },
+          }),
+
+          toast.success("Task created"),
+        )
+      } else if (initialTask?.id) {
+        dispatch(
+          updateTask({
+            projectId,
+            task: {
+              ...initialTask,
+              title: data.title,
+              description: data.description,
+              priority: data.priority,
+              assignee,
+              updatedAt: now,
+            },
+          }),
+
+          toast.success("Task updated"),
+        )
+      }
+
+      reset()
+      onSuccess?.()
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error(
+        isNew
+          ? "Something went wrong while creating the task"
+          : "Something went wrong while updating the task",
       )
     }
-
-    reset()
-    onSuccess?.()
   }
 
   return (

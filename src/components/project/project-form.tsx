@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useAppDispatch } from "@/hooks/use-store"
 import { addProject, updateProject } from "@/store/project/project-slice"
 import { Project } from "@/store/project/types"
+import { toast } from "sonner"
 
 const schema = z.object({
   name: z.string().min(3, "Project name is too short"),
@@ -44,29 +45,42 @@ const ProjectForm = (props: ProjectFormProps) => {
   const onSubmit = (values: FormValues) => {
     const now = new Date().toISOString()
 
-    if (isNew) {
-      dispatch(
-        addProject({
-          id: nanoid(),
-          name: values.name,
-          description: values.description,
-          createdAt: now,
-          tasks: [],
-        }),
-      )
-    } else if (project?.id) {
-      dispatch(
-        updateProject({
-          ...project,
-          name: values.name,
-          description: values.description,
-          updatedAt: now,
-        }),
+    try {
+      if (isNew) {
+        dispatch(
+          addProject({
+            id: nanoid(),
+            name: values.name,
+            description: values.description,
+            createdAt: now,
+            tasks: [],
+          }),
+        )
+
+        toast.success("Project created!")
+      } else if (project?.id) {
+        dispatch(
+          updateProject({
+            ...project,
+            name: values.name,
+            description: values.description,
+            updatedAt: now,
+          }),
+        )
+
+        toast.success("Project updated!")
+      }
+
+      reset()
+      onSuccess()
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error(
+        isNew
+          ? "Something went wrong while creating the project"
+          : "Something went wrong while updating the project",
       )
     }
-
-    reset()
-    onSuccess()
   }
 
   return (

@@ -11,6 +11,7 @@ import {
 import { Task } from "@/store/project/types"
 import { useAppDispatch } from "@/hooks/use-store"
 import { deleteTask } from "@/store/project/project-slice"
+import { toast } from "sonner"
 
 type DeleteTaskDialogProps = {
   projectId: string
@@ -27,6 +28,7 @@ const DeleteTaskDialog = (props: DeleteTaskDialogProps) => {
 
   const onConfirm = () => {
     dispatch(deleteTask({ projectId, taskId: task.id }))
+    toast.success(`Task "${task.title}" deleted`)
     handleCloseDeleteDialog()
   }
 
